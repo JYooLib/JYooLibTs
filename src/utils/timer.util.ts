@@ -1,6 +1,11 @@
 import { Observable, Subscription, timer } from 'rxjs';
 
-export class JY_Timer {
+/** ===============================================
+ * JYLib Timer
+ * - Async sleeep
+ * - Single timer: Requires restart when expires
+ */
+export class JYLib_Timer {
 
 private tmr$: Observable<number> = null;
 private tmrSubscription: Subscription = null;
@@ -8,16 +13,27 @@ private tmrSubscription: Subscription = null;
 /**
  * Creates an instance of jy timer.
  * @param cb - Callback when timer hits
- * @param [intervalMs] - Timer interval (ms)
+ * @param [intervalMs] - Timer interval (ms), default=1000
  */
 constructor(private cb: () => void,
     public intervalMs: number = 1000) {
   }
 
   /**
+   * Sleeps for given duration
+   * @param durationMs 
+   * @returns  
+   */
+  static sleep(durationMs: number) {
+    return new Promise((resolve) => {
+      setTimeout(resolve, durationMs);
+    });
+  }
+
+  /**
    * Starts jy timer
-   * @param [intervalMs] - Timer interval (ms) 
-   * @param [runCbFirst] - Run callback first before timer starts
+   * @param [intervalMs] - Timer interval (ms), default=this.intervalMs
+   * @param [runCbFirst] - Run callback first before timer starts, default=false
    * @returns  
    */
   public start(intervalMs: number = this.intervalMs, runCbFirst: boolean = false) {
@@ -65,7 +81,7 @@ constructor(private cb: () => void,
 
   /**
    * Expires jy timer
-   * @param [expireAfterMs] - Optional time (ms) till the timer expires
+   * @param [expireAfterMs] - Optional time (ms) till the timer expires, default=0
    */
   public expire(expireAfterMs: number = 0) {
     if (expireAfterMs == 0) {
