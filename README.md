@@ -1,2 +1,2 @@
 # JYooLibTs
-JYOO Typescript Lib
+JYOO Typescript Library
