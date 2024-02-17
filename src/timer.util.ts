@@ -2,13 +2,24 @@ import { Observable, Subscription, timer } from 'rxjs';
 
 export class JY_Timer {
 
-  private tmr$: Observable<number> = null;
-  private tmrSubscription: Subscription = null;
+private tmr$: Observable<number> = null;
+private tmrSubscription: Subscription = null;
 
-  constructor(private cb: () => void,
+/**
+ * Creates an instance of jy timer.
+ * @param cb - Callback when timer hits
+ * @param [intervalMs] - Timer interval (ms)
+ */
+constructor(private cb: () => void,
     public intervalMs: number = 1000) {
   }
 
+  /**
+   * Starts jy timer
+   * @param [intervalMs] - Timer interval (ms) 
+   * @param [runCbFirst] - Run callback first before timer starts
+   * @returns  
+   */
   public start(intervalMs: number = this.intervalMs, runCbFirst: boolean = false) {
     
     this.stop();
@@ -33,6 +44,9 @@ export class JY_Timer {
     });
   }
 
+  /**
+   * Stops jy timer
+   */
   public stop() {
     // TODO: this should be called from the client when destroyed. It can be forgotten by user. Is there anyway to automate this?
     if (this.tmrSubscription != null) {
@@ -41,10 +55,18 @@ export class JY_Timer {
     }
   }
 
-  public isStopped() {
+  /**
+   * Determines whether the timer is stopped
+   * @returns boolean
+   */
+  public isStopped(): boolean {
     return this.tmrSubscription == null;
   }
 
+  /**
+   * Expires jy timer
+   * @param [expireAfterMs] - Optional time (ms) till the timer expires
+   */
   public expire(expireAfterMs: number = 0) {
     if (expireAfterMs == 0) {
       this.process(false);
