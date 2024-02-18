@@ -10,17 +10,19 @@ import * as winston from 'winston';
  * Also supports querying log files through query function.
  */
 @Injectable({ scope: Scope.TRANSIENT })
-export class LogService implements LoggerService {
-  private logger: Logger;
-  private loggerLabel: string
 
-  public setLabel(label: string) {
-    this.loggerLabel = label;
-  }
+export class JYLib_LoggerService implements LoggerService {
+  public logger: Logger;
+  public loggerLabel: string = '';
 
-  constructor() {
-    var pkgJson = require(`${process.env.PWD}/package.json`);
-    const appName = `${pkgJson.name || 'app'}`;
+  // public setLabel(label: string) {
+  //   this.loggerLabel = label;
+  // }
+
+
+  constructor(appName: string) {
+    //var pkgJson = require(`${process.env.PWD}/package.json`);
+    //const appName = `${pkgJson.name || 'app'}`;
     const logPrefixName = appName;
 
     this.logger = winston.createLogger({
