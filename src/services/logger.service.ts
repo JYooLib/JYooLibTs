@@ -4,6 +4,8 @@ import { Injectable, LoggerService, Scope } from '@nestjs/common';
 import { Logger } from 'winston';
 import 'winston-daily-rotate-file';
 import * as winston from 'winston';
+import { WinstonModule } from 'nest-winston';
+
 
 /**
  * Creates log file every day and stores them in /logs directory
@@ -12,7 +14,7 @@ import * as winston from 'winston';
 @Injectable({ scope: Scope.TRANSIENT })
 
 export class JYLib_LoggerService implements LoggerService {
-  public logger: Logger;
+  public logger: LoggerService;
   public loggerLabel: string = '';
 
   // public setLabel(label: string) {
@@ -25,7 +27,7 @@ export class JYLib_LoggerService implements LoggerService {
     //const appName = `${pkgJson.name || 'app'}`;
     const logPrefixName = appName;
 
-    this.logger = winston.createLogger({
+    this.logger = WinstonModule.createLogger({
       // Reference
       // https://github.com/winstonjs/winston
       // https://github.com/gremo/nest-winston
@@ -90,7 +92,7 @@ export class JYLib_LoggerService implements LoggerService {
   }
 
   log(message: any, label = this.loggerLabel): any {
-    this.logger.info({
+    this.logger.log({
       message: message,
       label: label
     });
@@ -106,13 +108,6 @@ export class JYLib_LoggerService implements LoggerService {
 
   warn(message: any, label = this.loggerLabel): any {
     this.logger.warn({
-      message: message,
-      label: label
-    });
-  }
-
-  info(message: any, label = this.loggerLabel): any {
-    this.logger.info({
       message: message,
       label: label
     });
