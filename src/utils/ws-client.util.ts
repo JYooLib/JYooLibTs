@@ -42,6 +42,9 @@ export class JYLib_WsClient<T> {
     );
   } 
 
+  /**
+   * Disconnect from server
+   */
   public disconnect() {
     if (this.subscription != null) {
       this.subscription.unsubscribe();
@@ -51,10 +54,18 @@ export class JYLib_WsClient<T> {
     }
   }
 
-  public isConnected() {
+  /**
+   * Determines whether connected is
+   * @returns true if connected 
+   */
+  public isConnected(): boolean {
     return this.subscription != null;
   }
 
+  /**
+   * Sends message
+   * @param msg 
+   */
   public tx(msg: T) {
     if (!this.isConnected()) {
       return;

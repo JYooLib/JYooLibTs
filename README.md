@@ -53,6 +53,8 @@ export { JYLIb_HostExecService, JYLib_LoggerService };
 
 ## Utils
 ```ts
+import { Observable } from 'rxjs';
+
 /** ===============================================
  * JYLib DataFormat
  * - Data format converters
@@ -335,8 +337,19 @@ declare class JYLib_WsClient<T> {
      * @param onErr - Callback when error occured
      */
     connect(url: string, onRxMsg: (msg: T) => void, onErr: (err: any) => void): void;
+    /**
+     * Disconnect from server
+     */
     disconnect(): void;
+    /**
+     * Determines whether connected is
+     * @returns true if connected
+     */
     isConnected(): boolean;
+    /**
+     * Sends message
+     * @param msg
+     */
     tx(msg: T): void;
 }
 
