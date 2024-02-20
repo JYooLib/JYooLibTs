@@ -1,35 +1,51 @@
 import { Injectable } from '@nestjs/common';
 import { exec } from 'child_process';
-import { LogService } from '../log_service/log.service';
+import { JYLib_LoggerService } from './logger.service';
 
+/** ===============================================
+ * JYLIb_HostExecService
+ * 
+ * Execute command in the host
+ * 
+ * Following env parameters are required:
+ * - HOST_USER_PWD: host user id
+ * - HOST_USER_ID: host user password
+ * - HOST_IP: host ip address
+ */
 @Injectable()
-export class HostExecService {
-  constructor(private logService: LogService) {
-    this.logService.setLabel('HostExecService');
+export class JYLIb_HostExecService {
+  constructor(private logger: JYLib_LoggerService) {
+    this.logger.loggerLabel = 'HostExecService';
   }
 
+  /**
+   * Executes command in the host
+   * @param cmdStr - command line
+   * @param [runAsSudo] - boolean
+   * @returns execute error, null if no error
+   */
   async execute(cmdStr: string, runAsSudo: boolean = false): Promise<any> {
     if (runAsSudo) {
       cmdStr = `"echo ${process.env.HOST_USER_PWD} | sudo -S ${cmdStr}"`;
     }
 
     const cmd = `sshpass -p '${process.env.HOST_USER_PWD}' ssh -q -o StrictHostKeyChecking=no ${process.env.HOST_USER_ID}@${process.env.DOCKER_HOST_IP} ${cmdStr}`;
-    this.logService.log(`execute(): cmd=${cmd.replace(process.env.HOST_USER_PWD, '****')}`);
+    this.logger.log(`execute(): cmd=${cmd.replace(process.env.HOST_USER_PWD, '****')}`);
 
     let stdoutStr = '', stderrStr = '';
     try {
-      const { err, stdout, stderr } = await new Promise(
+      const procOutputs = await new Promise(
         (resolve, reject) => {
           exec(cmd, (err, stdout, stderr) => {
             stdoutStr = stdout.toString();
             stderrStr = stderr.toString();
-            //this.logService.log(`stdout: ${stdout}`);
+            //this.logger.log(`stdout: ${stdout}`);
             if (err) {
               reject({ err, stdout, stderr});
             }
             if (stderr) {
               if (err != undefined) {
-                //this.logService.log(`stderr: ${stderr}`);
+                //this.logger.log(`stderr: ${stderr}`);
                 reject({ err, stdout, stderr });
               }
             }
@@ -42,8 +58,8 @@ export class HostExecService {
         e.err.cmd = e.err.cmd.replace(process.env.HOST_USER_PWD, '****');
       }
 
-      this.logService.error('execute(): cmd error:');
-      //this.logService.error(e);
+      this.logger.error('execute(): cmd error:');
+      //this.logger.error(e);
 
       if (e.err != undefined) {
         e.errStr = JSON.stringify(e.err, Object.getOwnPropertyNames(e.err));
@@ -51,13 +67,13 @@ export class HostExecService {
         e.errStr = 'Unknown Error';
       }
       e.errStr = e.errStr.replace(/\\n/g, '\n').replace(process.env.HOST_USER_PWD, '****');
-      this.logService.error(e.errStr);
+      this.logger.error(e.errStr);
       return e;
     }
-    this.logService.log(`<stdout>=\n${stdoutStr}`);
+    this.logger.log(`<stdout>=\n${stdoutStr}`);
     if (stderrStr != '') {
-      this.logService.log('');
-      this.logService.log(`<stderr>=\n${stderrStr}`);
+      this.logger.log('');
+      this.logger.log(`<stderr>=\n${stderrStr}`);
     }
     return null;
   }

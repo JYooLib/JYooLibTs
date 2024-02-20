@@ -1,26 +1,24 @@
-// Ref: https://docs.nestjs.com/techniques/logger, https://www.npmjs.com/package/winston-daily-rotate-file
-
 import { Injectable, LoggerService, Scope } from '@nestjs/common';
-import { Logger } from 'winston';
 import 'winston-daily-rotate-file';
 import * as winston from 'winston';
 import { WinstonModule } from 'nest-winston';
 
 
-/**
+
+/** ===============================================
+ * JYLib_LoggerService
+ * 
  * Creates log file every day and stores them in /logs directory
  * Also supports querying log files through query function.
+ * Ref: https://docs.nestjs.com/techniques/logger, https://www.npmjs.com/package/winston-daily-rotate-file
+ * Ref: https://github.com/winstonjs/winston
+ * Ref: https://github.com/gremo/nest-winston
  */
 @Injectable({ scope: Scope.TRANSIENT })
 
 export class JYLib_LoggerService implements LoggerService {
-  public logger: LoggerService;
-  public loggerLabel: string = '';
-
-  // public setLabel(label: string) {
-  //   this.loggerLabel = label;
-  // }
-
+  public logger: LoggerService;  // nestjs/common/LoggerService
+  public loggerLabel: string = ''; // Label appears in each log line
 
   constructor(appName: string) {
     //var pkgJson = require(`${process.env.PWD}/package.json`);
@@ -28,27 +26,22 @@ export class JYLib_LoggerService implements LoggerService {
     const logPrefixName = appName;
 
     this.logger = WinstonModule.createLogger({
-      // Reference
-      // https://github.com/winstonjs/winston
-      // https://github.com/gremo/nest-winston
       level: 'info',
       handleExceptions: true,
       format: winston.format.combine(
         winston.format.errors({ stack: true }),
         winston.format.timestamp({format: 'YYYY-MM-DD HH:mm:ss.SSS'}),
         winston.format.printf(({ level, message, label, timestamp }) => {
-          return JSON.stringify({t: timestamp,
-                                 lbl: label,
-                                 lvl: level, 
-                                 msg: message});
+          return JSON.stringify({ t: timestamp,
+                                  lbl: label,
+                                  lvl: level, 
+                                  msg: message});
         })
       ),
       transports: [
-        // Reference
-        // https://medium.com/@akshaypawar911/how-to-use-winston-daily-rotate-file-logger-in-nodejs-1e1996d2d38
         new winston.transports.DailyRotateFile({
           level: 'debug',
-          filename: `${logPrefixName}_%DATE%.log`,
+          filename: `${logPrefixName}_%DATE%.log.ansi`,
           dirname: 'logs',
           //datePattern: 'YYYY-MM-DD' this is default and determines frequency as well
           handleExceptions: true,

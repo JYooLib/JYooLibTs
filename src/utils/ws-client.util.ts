@@ -1,36 +1,42 @@
 import { webSocket, WebSocketSubject } from 'rxjs/webSocket';
 import { Subscription } from "rxjs";
 
-export interface BcLibWsMsg {
-  type: string;
-  from: string;
-  data: object;
-}
-export class BcLibWsClient {
+
+/** ===============================================
+ * JYLib WS Client
+ * - Websocket client wrapper
+ */
+export class JYLib_WsClient<T> {
   private socket: WebSocketSubject<any>;
   private subscription: Subscription = null;
 
-  public connect(url: string, onRxMsg: (msg: BcLibWsMsg) => void, onErr: (err: any) => void) {
+  /**
+   * Connect to server
+   * @param url - Server URL
+   * @param onRxMsg - Callback when msg received
+   * @param onErr - Callback when error occured
+   */
+  public connect(url: string, onRxMsg: (msg: T) => void, onErr: (err: any) => void) {
 
     if (this.isConnected()) {
       this.disconnect();
     }
 
     this.socket = webSocket(url);
-    console.log(`BcLibWsClient: Connecting to ${url}...`);
+    console.log(`Connecting to ${url}...`);
     this.subscription = this.socket.subscribe(
       msg => {
-        //console.log(`BcLibWsClient: RX: msg=${JSON.stringify(msg)}`);
+        //console.log(`RX: msg=${JSON.stringify(msg)}`);
         onRxMsg(msg);
       },
       err => {
-        console.error(`BcLibWsClient: Err=${JSON.stringify(err)}`);
+        console.error(`Err=${JSON.stringify(err)}`);
         onErr(err);
         this.disconnect();
       },
       () => {
         // Websocket closed
-        console.warn('BcLibWsClient: Closed');
+        console.warn('Closed');
         this.disconnect();
       }
     );
@@ -41,7 +47,7 @@ export class BcLibWsClient {
       this.subscription.unsubscribe();
       this.subscription = null;
       this.socket.complete();
-      console.log(`WebSocket: Disconnected`);
+      //console.log(`WebSocket: Disconnected`);
     }
   }
 
@@ -49,7 +55,7 @@ export class BcLibWsClient {
     return this.subscription != null;
   }
 
-  public tx(msg: BcLibWsMsg) {
+  public tx(msg: T) {
     if (!this.isConnected()) {
       return;
     }
