@@ -1,6 +1,6 @@
 {
   "name": "jyoo-lib-ts",
-  "version": "0.1.1",
+  "version": "0.2.0",
   "description": "JYoo Typescript Library",
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
@@ -8,7 +8,7 @@
   "homepage": "",
   "repository": "https://github.com/JYooLib/JYooLibTs",
   "scripts": {
-    "build": "tsup",
+    "build": "npm run test -- --silent=false && tsup",
     "test": "jest"
   },
   "keywords": [

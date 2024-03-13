@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { exec } from 'child_process';
-import { JYLib_LoggerService } from './logger.service';
+import { JYLib_LoggerService, LOG_ERROR, LOG_INFO } from './logger.service';
 
 /** ===============================================
  * JYLIb_HostExecService
@@ -15,7 +15,7 @@ import { JYLib_LoggerService } from './logger.service';
 @Injectable()
 export class JYLIb_HostExecService {
   constructor(private logger: JYLib_LoggerService) {
-    this.logger.loggerLabel = 'HostExecService';
+    this.logger.appName = 'HostExecService';
   }
 
   /**
@@ -30,7 +30,7 @@ export class JYLIb_HostExecService {
     }
 
     const cmd = `sshpass -p '${process.env.HOST_USER_PWD}' ssh -q -o StrictHostKeyChecking=no ${process.env.HOST_USER_ID}@${process.env.DOCKER_HOST_IP} ${cmdStr}`;
-    this.logger.log(`execute(): cmd=${cmd.replace(process.env.HOST_USER_PWD, '****')}`);
+    LOG_INFO(this, `execute(): cmd=${cmd.replace(process.env.HOST_USER_PWD, '****')}`);
 
     let stdoutStr = '', stderrStr = '';
     try {
@@ -58,8 +58,7 @@ export class JYLIb_HostExecService {
         e.err.cmd = e.err.cmd.replace(process.env.HOST_USER_PWD, '****');
       }
 
-      this.logger.error('execute(): cmd error:');
-      //this.logger.error(e);
+      LOG_ERROR(this, 'execute(): cmd error:', e.trace);
 
       if (e.err != undefined) {
         e.errStr = JSON.stringify(e.err, Object.getOwnPropertyNames(e.err));
@@ -67,13 +66,13 @@ export class JYLIb_HostExecService {
         e.errStr = 'Unknown Error';
       }
       e.errStr = e.errStr.replace(/\\n/g, '\n').replace(process.env.HOST_USER_PWD, '****');
-      this.logger.error(e.errStr);
+      LOG_ERROR(this, e.errStr, e.trace);
       return e;
     }
-    this.logger.log(`<stdout>=\n${stdoutStr}`);
+    LOG_INFO(this, `<stdout>=\n${stdoutStr}`);
     if (stderrStr != '') {
-      this.logger.log('');
-      this.logger.log(`<stderr>=\n${stderrStr}`);
+      LOG_INFO(this, '');
+      LOG_INFO(this, `<stderr>=\n${stderrStr}`);
     }
     return null;
   }

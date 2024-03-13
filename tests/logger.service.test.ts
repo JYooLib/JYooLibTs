@@ -1,7 +1,19 @@
-import { JYLib_LoggerService } from "../src/services/logger.service";
+import { JYLib_LoggerService, LOG_DEBUG, LOG_ERROR, LOG_INFO, LOG_VERBOSE, LOG_WARN } from "../src/services/logger.service";
 
-test('logging', () => {
-	const logger = new JYLib_LoggerService('test', 'debug');
-  logger.debug("hello");
-  expect(logger).toBeInstanceOf(JYLib_LoggerService);
+class TestObject {
+  loggerService: JYLib_LoggerService;
+}
+
+test('logging to console', () => {
+  const testObj = new TestObject();
+  testObj.loggerService = new JYLib_LoggerService('test', 'debug');
+  LOG_ERROR(testObj, "DEBUG Message!!");
+  LOG_WARN(testObj, "WARN Message!!");
+  LOG_INFO(testObj, "INFO Message!!");
+  LOG_VERBOSE(testObj, "VERBOSE Message!!");
+  LOG_DEBUG(testObj, "DEBUG Message!!");
+
+  // Print with trace
+  var err = new Error();
+  testObj.loggerService.error("ERROR with trace", err.stack)
 });
