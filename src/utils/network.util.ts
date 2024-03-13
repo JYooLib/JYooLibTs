@@ -2,6 +2,9 @@
  * JYLib Network
  * - Network utils
  */
+
+export type IPv4 = string;
+export type MacAddr = string;
 export class JYLib_Network {
 
   /**
@@ -9,7 +12,7 @@ export class JYLib_Network {
    * @param ip 
    * @returns True if ip is valid IP v4 format
    */
-  static isValidIpv4Addr(ip: string): boolean {
+  static isValidIpv4Addr(ip: IPv4): boolean {
     return /^(?=\d+\.\d+\.\d+\.\d+$)(?:(?:25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9][0-9]|[0-9])\.?){4}$/.test(ip);
   }
 
@@ -18,7 +21,7 @@ export class JYLib_Network {
    * @param ip 
    * @returns long
    */
-  static ip2long(ip: string): number {
+  static ip2long(ip: IPv4): number {
     var components;
 
     if (components = ip.match(/^(\d{1,3})\.(\d{1,3})\.(\d{1,3})\.(\d{1,3})$/)) {
@@ -60,7 +63,7 @@ export class JYLib_Network {
    * @param subnet 
    * @returns true if sub net 
    */
-  static inSubNet(ip: string, subnet: string): boolean {   
+  static inSubNet(ip: IPv4, subnet: string): boolean {   
       var mask, base_ip, long_ip = JYLib_Network.ip2long(ip);
       if( (mask = subnet.match(/^(.*?)\/(\d{1,2})$/)) && ((base_ip=JYLib_Network.ip2long(mask[1])) >= 0) ) {
           var freedom = Math.pow(2, 32 - parseInt(mask[2]));
@@ -96,7 +99,7 @@ export class JYLib_Network {
    * @param netmask 
    * @returns network base addr 
    */
-  static getNetworkBaseAddr(ip: string, netmask: string): string {
+  static getNetworkBaseAddr(ip: IPv4, netmask: string): IPv4 {
     var netBin = "";
 
     if ( (!JYLib_Network.isValidIpv4Addr(ip)) ||
@@ -147,7 +150,7 @@ export class JYLib_Network {
    * @param netmask 
    * @returns subnet 
    */
-  static getSubnet(ip: string, netmask: string): string {
+  static getSubnet(ip: IPv4, netmask: string): string {
     let networkAddrBase = JYLib_Network.getNetworkBaseAddr(ip, netmask);
     return `${networkAddrBase}/${JYLib_Network.netmaskToCidr(netmask)}`;
   }

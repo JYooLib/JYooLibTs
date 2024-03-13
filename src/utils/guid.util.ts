@@ -2,6 +2,10 @@
  * JYLib Guid
  * - GUID management
  */
+
+export type GUID = string;
+export const EMPTY_GUID = '00000000-0000-0000-0000-000000000000';
+
 export class JYLib_Guid {
 
   /**
