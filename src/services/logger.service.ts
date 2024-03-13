@@ -64,7 +64,7 @@ export const LOG_DEBUG = function (caller: any, msg?: string, trace?: any, logge
 @Injectable({ scope: Scope.TRANSIENT })
 export class JYLib_LoggerService implements LoggerService {
   public logger: LoggerService;  // nestjs/common/LoggerService
-  public appName: string = '';
+  private appName: string = '';
 
   constructor(appName: string, logLevel: |'error'|'warn'|'info'|'verbose'|'debug'  = 'info') {
     this.appName = appName;
@@ -172,9 +172,9 @@ export class JYLib_LoggerService implements LoggerService {
       case 'warn':
         this.logger.warn({message, label, trace}); break;
       case 'debug':
-        this.logger.verbose({message, label, trace}); break;
-      case 'verbose':
         this.logger.debug({message, label, trace}); break;
+      case 'verbose':
+        this.logger.verbose({message, label, trace}); break;
       case 'info':
       default:
         this.logger.log({message, label, trace}); break;
