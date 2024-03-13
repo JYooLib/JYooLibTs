@@ -195,6 +195,8 @@ declare class JYLib_Datetime {
  * JYLib Guid
  * - GUID management
  */
+type GUID = string;
+declare const EMPTY_GUID = "00000000-0000-0000-0000-000000000000";
 declare class JYLib_Guid {
     /**
      * Generate new guid
@@ -207,19 +209,21 @@ declare class JYLib_Guid {
  * JYLib Network
  * - Network utils
  */
+type IPv4 = string;
+type MacAddr = string;
 declare class JYLib_Network {
     /**
      * Determines whether valid ipv4 addr is
      * @param ip
      * @returns True if ip is valid IP v4 format
      */
-    static isValidIpv4Addr(ip: string): boolean;
+    static isValidIpv4Addr(ip: IPv4): boolean;
     /**
      * Convert IP string to long
      * @param ip
      * @returns long
      */
-    static ip2long(ip: string): number;
+    static ip2long(ip: IPv4): number;
     /**
    * Convert long to IP string
    *     example: long2ip( 3221234342 );
@@ -234,7 +238,7 @@ declare class JYLib_Network {
      * @param subnet
      * @returns true if sub net
      */
-    static inSubNet(ip: string, subnet: string): boolean;
+    static inSubNet(ip: IPv4, subnet: string): boolean;
     /**
      * Netmasks to CIDR
      * @param mask
@@ -247,14 +251,14 @@ declare class JYLib_Network {
      * @param netmask
      * @returns network base addr
      */
-    static getNetworkBaseAddr(ip: string, netmask: string): string;
+    static getNetworkBaseAddr(ip: IPv4, netmask: string): IPv4;
     /**
      * Gets subnet
      * @param ip
      * @param netmask
      * @returns subnet
      */
-    static getSubnet(ip: string, netmask: string): string;
+    static getSubnet(ip: IPv4, netmask: string): string;
     /**
      * Gets base url
      * @param url
@@ -378,7 +382,7 @@ declare class JYLib_WsClient<T> {
     tx(msg: T): void;
 }
 
-export { JYLib_DataFormat, JYLib_DataObject, JYLib_Datetime, JYLib_Guid, JYLib_Network, JYLib_Rxjs, JYLib_Timer, JYLib_WsClient };
+export { EMPTY_GUID, type GUID, type IPv4, JYLib_DataFormat, JYLib_DataObject, JYLib_Datetime, JYLib_Guid, JYLib_Network, JYLib_Rxjs, JYLib_Timer, JYLib_WsClient, type MacAddr };
 
 ```
 

@@ -1,6 +1,6 @@
 {
   "name": "jyoo-lib-ts",
-  "version": "0.2.3",
+  "version": "0.2.4",
   "description": "JYoo Typescript Library",
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
