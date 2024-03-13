@@ -64,10 +64,10 @@ export const LOG_DEBUG = function (caller: any, msg?: string, trace?: any, logge
 @Injectable({ scope: Scope.TRANSIENT })
 export class JYLib_LoggerService implements LoggerService {
   public logger: LoggerService;  // nestjs/common/LoggerService
-  private appName: string = '';
+  private m_appName: string = '';
 
   constructor(appName: string, logLevel: |'error'|'warn'|'info'|'verbose'|'debug'  = 'info') {
-    this.appName = appName;
+    this.m_appName = appName;
 
     const logPrefixName = appName;
     
@@ -131,23 +131,27 @@ export class JYLib_LoggerService implements LoggerService {
     });
   }
 
-  log(message: any, trace?: string, label: string=this.appName): any {
+  get appName(): string {
+    return this.m_appName;
+  }
+
+  log(message: any, trace?: string, label: string=this.m_appName): any {
     this.logger.log({ message: message, label: label, trace: trace });
   }
 
-  error(message: any, trace?: string, label: string=this.appName): any {
+  error(message: any, trace?: string, label: string=this.m_appName): any {
     this.logger.error({ message: message, label: label, trace: trace });
   }
 
-  warn(message: any, trace?: string, label: string=this.appName): any {
+  warn(message: any, trace?: string, label: string=this.m_appName): any {
     this.logger.warn({ message: message, label: label, trace: trace });
   }
 
-  debug(message: any, trace?: string, label: string=this.appName): any {
+  debug(message: any, trace?: string, label: string=this.m_appName): any {
     this.logger.debug({ message: message, label: label, trace: trace });
   }
 
-  verbose(message: any, trace?: string, label: string=this.appName): any {
+  verbose(message: any, trace?: string, label: string=this.m_appName): any {
     this.logger.verbose({ message: message, label: label, trace: trace });
   }
 
@@ -159,7 +163,7 @@ export class JYLib_LoggerService implements LoggerService {
    * @param [logLevel] 
    */
   public write(caller: any, message?: string, trace?: any, logLevel: 'fatal'|'error'|'warn'|'info'|'verbose'|'debug'  = 'info') {
-    let label = `${this.appName}`;
+    let label = `${this.m_appName}`;
     let subLabel = `${(caller != undefined) ? "["+caller.constructor.name.toString()+"]: " : ''}`
 
     message = `${subLabel}${message}`;

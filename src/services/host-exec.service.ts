@@ -15,7 +15,6 @@ import { JYLib_LoggerService, LOG_ERROR, LOG_INFO } from './logger.service';
 @Injectable()
 export class JYLIb_HostExecService {
   constructor(private logger: JYLib_LoggerService) {
-    this.logger.appName = 'HostExecService';
   }
 
   /**

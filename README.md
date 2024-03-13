@@ -31,7 +31,7 @@ declare const LOG_VERBOSE: (caller: any, msg?: string, trace?: any, loggerServic
 declare const LOG_DEBUG: (caller: any, msg?: string, trace?: any, loggerService?: JYLib_LoggerService) => void;
 declare class JYLib_LoggerService implements LoggerService {
     logger: LoggerService;
-    appName: string;
+    private appName;
     constructor(appName: string, logLevel?: 'error' | 'warn' | 'info' | 'verbose' | 'debug');
     log(message: any, trace?: string, label?: string): any;
     error(message: any, trace?: string, label?: string): any;
