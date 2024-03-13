@@ -1,8 +1,18 @@
 # JYooLibTs
 JYOO Typescript Library
 
-## Services
+<br>
+
+# Table of Contents
+1. [Services](#Services)
+2. [Utils](#Utils)
+
+<br>
+
+## 1. Services <a name="Services"></a>
 ```ts
+import { LoggerService } from '@nestjs/common';
+
 /** ===============================================
  * JYLib_LoggerService
  *
@@ -11,16 +21,31 @@ JYOO Typescript Library
  * Ref: https://docs.nestjs.com/techniques/logger, https://www.npmjs.com/package/winston-daily-rotate-file
  * Ref: https://github.com/winstonjs/winston
  * Ref: https://github.com/gremo/nest-winston
+ *
+ * NOTE: It is preferable to use LOG_XXX macro to write log.
  */
+declare const LOG_ERROR: (caller: any, msg?: string, trace?: any, loggerService?: JYLib_LoggerService) => void;
+declare const LOG_WARN: (caller: any, msg?: string, trace?: any, loggerService?: JYLib_LoggerService) => void;
+declare const LOG_INFO: (caller: any, msg?: string, trace?: any, loggerService?: JYLib_LoggerService) => void;
+declare const LOG_VERBOSE: (caller: any, msg?: string, trace?: any, loggerService?: JYLib_LoggerService) => void;
+declare const LOG_DEBUG: (caller: any, msg?: string, trace?: any, loggerService?: JYLib_LoggerService) => void;
 declare class JYLib_LoggerService implements LoggerService {
     logger: LoggerService;
-    loggerLabel: string;
-    constructor(appName: string);
-    log(message: any, label?: string): any;
+    appName: string;
+    constructor(appName: string, logLevel?: 'error' | 'warn' | 'info' | 'verbose' | 'debug');
+    log(message: any, trace?: string, label?: string): any;
     error(message: any, trace?: string, label?: string): any;
-    warn(message: any, label?: string): any;
-    debug(message: any, label?: string): any;
-    verbose(message: any, label?: string): any;
+    warn(message: any, trace?: string, label?: string): any;
+    debug(message: any, trace?: string, label?: string): any;
+    verbose(message: any, trace?: string, label?: string): any;
+    /**
+     * Writes log
+     * @param caller
+     * @param [message]
+     * @param [trace]
+     * @param [logLevel]
+     */
+    write(caller: any, message?: string, trace?: any, logLevel?: 'fatal' | 'error' | 'warn' | 'info' | 'verbose' | 'debug'): void;
 }
 
 /** ===============================================
@@ -45,13 +70,13 @@ declare class JYLIb_HostExecService {
     execute(cmdStr: string, runAsSudo?: boolean): Promise<any>;
 }
 
-export { JYLIb_HostExecService, JYLib_LoggerService };
+export { JYLIb_HostExecService, JYLib_LoggerService, LOG_DEBUG, LOG_ERROR, LOG_INFO, LOG_VERBOSE, LOG_WARN };
 
 ```
 
 <br>
 
-## Utils
+## 2. Utils <a name="Utils"></a>
 ```ts
 import { Observable } from 'rxjs';
 
@@ -356,4 +381,5 @@ declare class JYLib_WsClient<T> {
 export { JYLib_DataFormat, JYLib_DataObject, JYLib_Datetime, JYLib_Guid, JYLib_Network, JYLib_Rxjs, JYLib_Timer, JYLib_WsClient };
 
 ```
+
 <br>
