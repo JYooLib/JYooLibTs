@@ -16,17 +16,16 @@ import { WinstonModule } from 'nest-winston';
  */
 @Injectable({ scope: Scope.TRANSIENT })
 
+
 export class JYLib_LoggerService implements LoggerService {
   public logger: LoggerService;  // nestjs/common/LoggerService
   public loggerLabel: string = ''; // Label appears in each log line
 
-  constructor(appName: string) {
-    //var pkgJson = require(`${process.env.PWD}/package.json`);
-    //const appName = `${pkgJson.name || 'app'}`;
+  constructor(appName: string, logLevel: 'error'|'warn'|'info'|'http'|'verbose'|'debug'|'silly'  = 'info') {
     const logPrefixName = appName;
 
     this.logger = WinstonModule.createLogger({
-      level: 'info',
+      level: logLevel,
       handleExceptions: true,
       format: winston.format.combine(
         winston.format.errors({ stack: true }),
