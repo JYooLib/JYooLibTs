@@ -6,7 +6,7 @@ class TestObject {
 
 test('logging to console', () => {
   const testObj = new TestObject();
-  testObj.loggerService = new JYLib_LoggerService('test', 'debug');
+  testObj.loggerService = new JYLib_LoggerService('test', 'debug', './tests/logs', 30);
   LOG_ERROR(testObj, "DEBUG Message!!");
   LOG_WARN(testObj, "WARN Message!!");
   LOG_INFO(testObj, "INFO Message!!");

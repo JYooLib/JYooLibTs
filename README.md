@@ -31,8 +31,16 @@ declare const LOG_VERBOSE: (caller: any, msg?: string, trace?: any, loggerServic
 declare const LOG_DEBUG: (caller: any, msg?: string, trace?: any, loggerService?: JYLib_LoggerService) => void;
 declare class JYLib_LoggerService implements LoggerService {
     logger: LoggerService;
-    private appName;
-    constructor(appName: string, logLevel?: 'error' | 'warn' | 'info' | 'verbose' | 'debug');
+    private m_appName;
+    /**
+     * Creates an instance of jylib logger service.
+     * @param appName
+     * @param [logLevel]
+     * @param [logsPath]
+     * @param [maxFiles]
+     */
+    constructor(appName: string, logLevel?: 'error' | 'warn' | 'info' | 'verbose' | 'debug', logsPath?: string, maxFiles?: number);
+    get appName(): string;
     log(message: any, trace?: string, label?: string): any;
     error(message: any, trace?: string, label?: string): any;
     warn(message: any, trace?: string, label?: string): any;
@@ -71,7 +79,6 @@ declare class JYLIb_HostExecService {
 }
 
 export { JYLIb_HostExecService, JYLib_LoggerService, LOG_DEBUG, LOG_ERROR, LOG_INFO, LOG_VERBOSE, LOG_WARN };
-
 ```
 
 <br>

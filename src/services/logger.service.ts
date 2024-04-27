@@ -66,7 +66,14 @@ export class JYLib_LoggerService implements LoggerService {
   public logger: LoggerService;  // nestjs/common/LoggerService
   private m_appName: string = '';
 
-  constructor(appName: string, logLevel: |'error'|'warn'|'info'|'verbose'|'debug'  = 'info') {
+  /**
+   * Creates an instance of jylib logger service.
+   * @param appName 
+   * @param [logLevel] 
+   * @param [logsPath] 
+   * @param [maxFiles] 
+   */
+  constructor(appName: string, logLevel: |'error'|'warn'|'info'|'verbose'|'debug'  = 'info', logsPath: string='./logs', maxFiles: number = 30) {
     this.m_appName = appName;
 
     const logPrefixName = appName;
@@ -89,11 +96,11 @@ export class JYLib_LoggerService implements LoggerService {
         new winston.transports.DailyRotateFile({
           level: logLevel,
           filename: `${logPrefixName}_%DATE%.log.ansi`,
-          dirname: 'logs',
+          dirname: logsPath,
           //datePattern: 'YYYY-MM-DD' this is default and determines frequency as well
           handleExceptions: true,
           json: true,
-          maxFiles: '30d',
+          maxFiles: maxFiles,
           format: winston.format.combine(
             winston.format.errors({ stack: true }),
             winston.format.timestamp(),
