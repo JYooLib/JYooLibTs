@@ -1,0 +1,42 @@
+version: "3.7"
+name: jyoo-lib-ts
+
+services:
+  dev:
+    image: jyoo-lib-ts-dev:${IMG_TAG:-latest}
+    container_name: jyoo-lib-ts-dev
+    build:
+      context: .
+      dockerfile: ./docker/dev.dockerfile      
+      #args:
+      #  NODE_VERSION: 18.12.0
+
+    user: ${CUR_UID:-1000:1000} # This is required in order to access host's filesystem from the docker container
+    network_mode: "host"
+    stdin_open: true # docker run -i
+    tty: true        # docker run -t
+    environment:
+      - DISPLAY
+      - XAUTHORITY=/home/node/.Xauthority
+    #devices:
+    #  - "/dev/snd:/dev/snd"
+    volumes:
+      - /etc/timezone:/etc/timezone:ro
+      - /etc/localtime:/etc/localtime:ro
+      - /tmp/.X11-unix:/tmp/.X11-unix
+      - ~/.bash_history:/home/node/.bash_history
+      - ~/.Xauthority:/home/node/.Xauthority
+      - ./:/home/node/workspace
+
+
+# Commands
+
+# BUILD
+# - Build:             > docker compose build
+# - Build with args:   > docker compose build --build-arg NODE_VERSION="16.14.2"
+# - Build Clean:       > docker compose build --no-cache
+
+# RUN DEV CONTAINER
+# - Run Dev:           > docker compose run --service-ports --rm dev bash  # Run bash with ports mapped
+
+
