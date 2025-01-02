@@ -7,8 +7,8 @@ import { Observable, Subscription, timer } from 'rxjs';
  */
 export class JYLib_Timer {
 
-private tmr$: Observable<number> = null;
-private tmrSubscription: Subscription = null;
+private tmr$: Observable<number> | null = null;
+private tmrSubscription: Subscription | null = null;
 
 /**
  * Creates an instance of jy timer.

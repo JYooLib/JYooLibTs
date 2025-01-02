@@ -31,7 +31,7 @@ export class JYLib_Rxjs {
    *    unsubscribeAll.next();
    *    unsubscribeAll.complete();
    */
-  static safeObserve<T>(observable: Observable<T>, subscribeUntil: Observable<any>, calledIfChanged: boolean = true, filterKeys: string[] = null): Observable<T> {
+  static safeObserve<T>(observable: Observable<T>, subscribeUntil: Observable<any>, calledIfChanged: boolean = true, filterKeys: string[] | null = null): Observable<T> {
     return observable.pipe(
       takeUntil(subscribeUntil),
       map(data => {
@@ -40,12 +40,10 @@ export class JYLib_Rxjs {
           return data;
         }
         // emit only for filtered key
-        return JYLib_DataObject.objectFiltered(data, filterKeys);
+        return JYLib_DataObject.objectFiltered(data as { [key: string]: any }, filterKeys);
       }),
       // emit only if changed
-      distinctUntilChanged(calledIfChanged ? JYLib_DataObject.objectEqual : (prev, cur) => {
-        return false;
-      })
+      distinctUntilChanged(calledIfChanged ? JYLib_DataObject.objectEqual : () => false)
     );
   }
 }

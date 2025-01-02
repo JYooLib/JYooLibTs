@@ -8,7 +8,7 @@ import { Subscription } from "rxjs";
  */
 export class JYLib_WsClient<T> {
   private socket: WebSocketSubject<any>;
-  private subscription: Subscription = null;
+  private subscription: Subscription | null = null;
 
   /**
    * Connect to server

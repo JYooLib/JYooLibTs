@@ -81,13 +81,13 @@ export class JYLib_DataObject {
    * @param filterKeys - fields that shall be filtered
    * @returns Object with fields that are filtered from filterKeys
    */
-  static objectFiltered(from: any, filterKeys: string[]): any {
+  static objectFiltered(from: { [key: string]: any }, filterKeys: string[]): { [key: string]: any } {
     const ret = Object.keys(from)
       .filter(key => filterKeys.includes(key))
       .reduce((obj, key) => {
         obj[key] = from[key];
         return obj;
-      }, {});
+      }, {} as { [key: string]: any });
     return ret;      
   }
 
@@ -97,7 +97,7 @@ export class JYLib_DataObject {
    * @param delta - Object with fields changed (delta)
    * @returns Merged map with delta 
    */
-  static getMergedMapWithDelta(src: object, delta: object): object {
+  static getMergedMapWithDelta(src: { [key: string]: any }, delta: { [key: string]: any }): { [key: string]: any } | null {
     if (src === undefined) {
       // Overwrite with delta
       return delta;
@@ -124,7 +124,7 @@ export class JYLib_DataObject {
     }
 
     if (typeof src == "object") {
-      const mergedMap = { ...src, ...delta };
+      const mergedMap: Record<string, any> = { ...src, ...delta };
 
       Object.keys(mergedMap).forEach((key) => {
         mergedMap[key] = JYLib_DataObject.getMergedMapWithDelta(src[key], delta[key]);
@@ -162,6 +162,6 @@ export class JYLib_DataObject {
           res[key] = obj[key];
         }
         return res;
-    },{});
+    }, {} as Record<string, any>);
   }
 }

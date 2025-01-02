@@ -3,7 +3,7 @@ import 'winston-daily-rotate-file';
 import * as winston from 'winston';
 import { WinstonModule } from 'nest-winston';
 
-function getLogService(me: any, msg?: string, loggerService?: JYLib_LoggerService): JYLib_LoggerService {
+function getLogService(me: any, msg?: string, loggerService?: JYLib_NestJsLoggerService): JYLib_NestJsLoggerService {
   if (loggerService == undefined) {
     loggerService = me.loggerService;
   }
@@ -15,7 +15,7 @@ function getLogService(me: any, msg?: string, loggerService?: JYLib_LoggerServic
 }
 
 /** ===============================================
- * JYLib_LoggerService
+ * JYLib_NestJsLoggerService
  * 
  * Creates log file every day and stores them in /logs directory
  * Also supports querying log files through query function.
@@ -26,48 +26,48 @@ function getLogService(me: any, msg?: string, loggerService?: JYLib_LoggerServic
  * NOTE: It is preferable to use LOG_XXX macro to write log.
  */
 
-export const LOG_ERROR = function (caller: any, msg?: string, trace?: any, loggerService?: JYLib_LoggerService) {
-  const logger: JYLib_LoggerService = getLogService(caller, msg, loggerService);
+export const LOG_ERROR = function (caller: any, msg?: string, trace?: any, loggerService?: JYLib_NestJsLoggerService) {
+  const logger: JYLib_NestJsLoggerService = getLogService(caller, msg, loggerService);
   if (logger !== undefined) {
     logger.write(caller, msg, trace, 'error');
   }
 };
 
-export const LOG_WARN = function (caller: any, msg?: string, trace?: any, loggerService?: JYLib_LoggerService) {
-  const logger: JYLib_LoggerService = getLogService(caller, msg, loggerService);
+export const LOG_WARN = function (caller: any, msg?: string, trace?: any, loggerService?: JYLib_NestJsLoggerService) {
+  const logger: JYLib_NestJsLoggerService = getLogService(caller, msg, loggerService);
   if (logger !== undefined) {
     logger.write(caller, msg, trace,  'warn');
   }
 };
 
-export const LOG_INFO = function (caller: any, msg?: string, trace?: any, loggerService?: JYLib_LoggerService) {
-  const logger: JYLib_LoggerService = getLogService(caller, msg, loggerService);
+export const LOG_INFO = function (caller: any, msg?: string, trace?: any, loggerService?: JYLib_NestJsLoggerService) {
+  const logger: JYLib_NestJsLoggerService = getLogService(caller, msg, loggerService);
   if (logger !== undefined) {
     logger.write(caller, msg, trace,  'info');
   }
 };
 
-export const LOG_VERBOSE = function (caller: any, msg?: string, trace?: any, loggerService?: JYLib_LoggerService) {
-  const logger: JYLib_LoggerService = getLogService(caller, msg, loggerService);
+export const LOG_VERBOSE = function (caller: any, msg?: string, trace?: any, loggerService?: JYLib_NestJsLoggerService) {
+  const logger: JYLib_NestJsLoggerService = getLogService(caller, msg, loggerService);
   if (logger !== undefined) {
     logger.write(caller, msg, trace,  'verbose');
   }
 };
 
-export const LOG_DEBUG = function (caller: any, msg?: string, trace?: any, loggerService?: JYLib_LoggerService) {
-  const logger: JYLib_LoggerService = getLogService(caller, msg, loggerService);
+export const LOG_DEBUG = function (caller: any, msg?: string, trace?: any, loggerService?: JYLib_NestJsLoggerService) {
+  const logger: JYLib_NestJsLoggerService = getLogService(caller, msg, loggerService);
   if (logger !== undefined) {
     logger.write(caller, msg, trace,  'debug');
   }
 };
 
 @Injectable({ scope: Scope.TRANSIENT })
-export class JYLib_LoggerService implements LoggerService {
+export class JYLib_NestJsLoggerService implements LoggerService {
   public logger: LoggerService;  // nestjs/common/LoggerService
   private m_appName: string = '';
 
   /**
-   * Creates an instance of jylib logger service.
+   * Creates an instance of logger service.
    * @param appName 
    * @param [logLevel] 
    * @param [logsPath] 

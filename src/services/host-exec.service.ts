@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { exec } from 'child_process';
-import { JYLib_LoggerService, LOG_ERROR, LOG_INFO } from './logger.service';
+import { JYLib_NestJsLoggerService, LOG_ERROR, LOG_INFO } from './nestjs-logger.service';
 
 /** ===============================================
  * JYLIb_HostExecService
@@ -14,7 +14,7 @@ import { JYLib_LoggerService, LOG_ERROR, LOG_INFO } from './logger.service';
  */
 @Injectable()
 export class JYLIb_HostExecService {
-  constructor(private logger: JYLib_LoggerService) {
+  constructor(private logger: JYLib_NestJsLoggerService) {
   }
 
   /**
