@@ -1,4 +1,3 @@
-export * from './utils/data-format.util';
 export * from './utils/data-object.util';
 export * from './utils/datetime.util';
 export * from './utils/guid.util';
