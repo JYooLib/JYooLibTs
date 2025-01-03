@@ -15,7 +15,7 @@ export class JYLib_DataObject {
   static enumIndex<E>(e: any, val: E): number {
     let index = 0;
     for (const enumVal in e) {
-      if (enumVal == e[val]) {
+      if (e[enumVal] == val) {
         return index;
       }
       index++;

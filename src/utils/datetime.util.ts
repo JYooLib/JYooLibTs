@@ -110,6 +110,12 @@ export class JYLib_Datetime {
         hourStr = "0" + hourStr;
       }
 
+      if (dayStr != "0") {
+        while (dayStr.length < 2) {
+          dayStr = "0" + dayStr;
+        }
+      }
+
       return ((dayStr === "0") ? "" : (dayStr + ".")) + hourStr + ":" + minStr + ":" + secStr + "." + msecStr.substring(0, 3);
   }
 
@@ -119,14 +125,22 @@ export class JYLib_Datetime {
    * @returns mini time str, format="mm:ss"
    */
   static fillMiniTimeStr(value: string): string {
+    const parts = value.split(":");
+    if (parts.length === 2) {
+      let minutes = parts[0];
+      let seconds = parts[1];
 
-    let result: string = value.replace(':', '');
+      if (minutes.length < 2) {
+      minutes = "0" + minutes;
+      }
 
-    while (result.length < 4) {
-      result = `0${result}`;
+      if (seconds.length < 2) {
+      seconds = "0" + seconds;
+      }
+
+      return minutes + ":" + seconds;
     }
+    return value;
 
-    result = [result.slice(0, -2), ':', result.slice(-2)].join('');
-    return result;
   }
 }

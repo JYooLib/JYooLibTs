@@ -9,6 +9,8 @@ describe('JYLib_DataObject', () => {
     }
 
     it('should return the correct index for a given enum value', () => {
+      const enumIdx = JYLib_DataObject.enumIndex(TestEnum, TestEnum.FIRST);
+      console.log('>>> enumIdx:', enumIdx);
       expect(JYLib_DataObject.enumIndex(TestEnum, TestEnum.FIRST)).toBe(0);
       expect(JYLib_DataObject.enumIndex(TestEnum, TestEnum.SECOND)).toBe(1);
       expect(JYLib_DataObject.enumIndex(TestEnum, TestEnum.THIRD)).toBe(2);

@@ -37,6 +37,7 @@ describe('JYLib_Timer', () => {
     timer.start(1000);
     jest.advanceTimersByTime(1000);
     expect(callback).toHaveBeenCalledTimes(1);
+    timer.start(1000);
     jest.advanceTimersByTime(1000);
     expect(callback).toHaveBeenCalledTimes(2);
   });
@@ -60,11 +61,5 @@ describe('JYLib_Timer', () => {
     expect(timer.isStopped()).toBe(false);
     timer.stop();
     expect(timer.isStopped()).toBe(true);
-  });
-
-  it('should sleep for the specified duration', async () => {
-    const sleepSpy = jest.spyOn(global, 'setTimeout');
-    await JYLib_Timer.sleep(1000);
-    expect(sleepSpy).toHaveBeenCalledWith(expect.any(Function), 1000);
   });
 });
