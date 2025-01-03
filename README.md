@@ -14,7 +14,7 @@ JYOO Typescript Library
 import { LoggerService } from '@nestjs/common';
 
 /** ===============================================
- * JYLib_LoggerService
+ * JYLib_NestJsLoggerService
  *
  * Creates log file every day and stores them in /logs directory
  * Also supports querying log files through query function.
@@ -24,16 +24,16 @@ import { LoggerService } from '@nestjs/common';
  *
  * NOTE: It is preferable to use LOG_XXX macro to write log.
  */
-declare const LOG_ERROR: (caller: any, msg?: string, trace?: any, loggerService?: JYLib_LoggerService) => void;
-declare const LOG_WARN: (caller: any, msg?: string, trace?: any, loggerService?: JYLib_LoggerService) => void;
-declare const LOG_INFO: (caller: any, msg?: string, trace?: any, loggerService?: JYLib_LoggerService) => void;
-declare const LOG_VERBOSE: (caller: any, msg?: string, trace?: any, loggerService?: JYLib_LoggerService) => void;
-declare const LOG_DEBUG: (caller: any, msg?: string, trace?: any, loggerService?: JYLib_LoggerService) => void;
-declare class JYLib_LoggerService implements LoggerService {
+declare const LOG_ERROR: (caller: any, msg?: string, trace?: any, loggerService?: JYLib_NestJsLoggerService) => void;
+declare const LOG_WARN: (caller: any, msg?: string, trace?: any, loggerService?: JYLib_NestJsLoggerService) => void;
+declare const LOG_INFO: (caller: any, msg?: string, trace?: any, loggerService?: JYLib_NestJsLoggerService) => void;
+declare const LOG_VERBOSE: (caller: any, msg?: string, trace?: any, loggerService?: JYLib_NestJsLoggerService) => void;
+declare const LOG_DEBUG: (caller: any, msg?: string, trace?: any, loggerService?: JYLib_NestJsLoggerService) => void;
+declare class JYLib_NestJsLoggerService implements LoggerService {
     logger: LoggerService;
     private m_appName;
     /**
-     * Creates an instance of jylib logger service.
+     * Creates an instance of logger service.
      * @param appName
      * @param [logLevel]
      * @param [logsPath]
@@ -68,7 +68,7 @@ declare class JYLib_LoggerService implements LoggerService {
  */
 declare class JYLIb_HostExecService {
     private logger;
-    constructor(logger: JYLib_LoggerService);
+    constructor(logger: JYLib_NestJsLoggerService);
     /**
      * Executes command in the host
      * @param cmdStr - command line
@@ -78,7 +78,8 @@ declare class JYLIb_HostExecService {
     execute(cmdStr: string, runAsSudo?: boolean): Promise<any>;
 }
 
-export { JYLIb_HostExecService, JYLib_LoggerService, LOG_DEBUG, LOG_ERROR, LOG_INFO, LOG_VERBOSE, LOG_WARN };
+export { JYLIb_HostExecService, JYLib_NestJsLoggerService, LOG_DEBUG, LOG_ERROR, LOG_INFO, LOG_VERBOSE, LOG_WARN };
+
 ```
 
 <br>
@@ -86,25 +87,6 @@ export { JYLIb_HostExecService, JYLib_LoggerService, LOG_DEBUG, LOG_ERROR, LOG_I
 ## 2. Utils <a name="Utils"></a>
 ```ts
 import { Observable } from 'rxjs';
-
-/** ===============================================
- * JYLib DataFormat
- * - Data format converters
- */
-declare class JYLib_DataFormat {
-    /**
-     * Encodes utf8
-     * @param src - input string
-     * @returns ecoded string
-     */
-    static encodeUtf8(src: string): string;
-    /**
-     * Get CRC16
-     * @param data - input string
-     * @returns crc16
-     */
-    static crc16(data: string): number;
-}
 
 /** ===============================================
  * JYLib DataObject
@@ -145,14 +127,24 @@ declare class JYLib_DataObject {
      * @param filterKeys - fields that shall be filtered
      * @returns Object with fields that are filtered from filterKeys
      */
-    static objectFiltered(from: any, filterKeys: string[]): any;
+    static objectFiltered(from: {
+        [key: string]: any;
+    }, filterKeys: string[]): {
+        [key: string]: any;
+    };
     /**
      * Gets merged map with delta object
      * @param src - Source object
      * @param delta - Object with fields changed (delta)
      * @returns Merged map with delta
      */
-    static getMergedMapWithDelta(src: object, delta: object): object;
+    static getMergedMapWithDelta(src: {
+        [key: string]: any;
+    }, delta: {
+        [key: string]: any;
+    }): {
+        [key: string]: any;
+    } | null;
     /**
      * Sorts object keys
      * @param obj - Input object
@@ -310,7 +302,7 @@ declare class JYLib_Rxjs {
      *    unsubscribeAll.next();
      *    unsubscribeAll.complete();
      */
-    static safeObserve<T>(observable: Observable<T>, subscribeUntil: Observable<any>, calledIfChanged?: boolean, filterKeys?: string[]): Observable<T>;
+    static safeObserve<T>(observable: Observable<T>, subscribeUntil: Observable<any>, calledIfChanged?: boolean, filterKeys?: string[] | null): Observable<T>;
 }
 
 /** ===============================================
@@ -389,7 +381,7 @@ declare class JYLib_WsClient<T> {
     tx(msg: T): void;
 }
 
-export { EMPTY_GUID, type GUID, type IPv4, JYLib_DataFormat, JYLib_DataObject, JYLib_Datetime, JYLib_Guid, JYLib_Network, JYLib_Rxjs, JYLib_Timer, JYLib_WsClient, type MacAddr };
+export { EMPTY_GUID, type GUID, type IPv4, JYLib_DataObject, JYLib_Datetime, JYLib_Guid, JYLib_Network, JYLib_Rxjs, JYLib_Timer, JYLib_WsClient, type MacAddr };
 
 ```
 
